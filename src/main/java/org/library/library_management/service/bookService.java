@@ -31,9 +31,32 @@ public class bookService {
             map.put("sucess", "Record saved Successfully");
             map.put("Data", book);
 
-            return new ResponseEntity<Object>(book, HttpStatus.CREATED);
+            return new ResponseEntity<Object>(map, HttpStatus.CREATED);
         }
     }
+
+    public ResponseEntity<Object> addBooks(List<book> books) {
+        for(book book : books){
+            if(repository.existsByBookId(book.getBookId())){
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("error", "Book Already Exists with the id : " + book.getBookId());
+    
+                return new ResponseEntity<Object>(map, HttpStatus.IM_USED);
+            }
+        }
+
+        repository.saveAll(books);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sucess", "Record saved Successfully");
+        map.put("Data", books);
+
+        return new ResponseEntity<Object>(map, HttpStatus.CREATED);
+    }
+
+
+
+
 
 
 
@@ -53,13 +76,7 @@ public class bookService {
         }
     }
 
-
-    public ResponseEntity<Object> addBooks(List<book> books) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addBooks'");
-    }
-
-
+    
     public ResponseEntity<Object> getBookById(String bookId) {
         Optional<book> op = repository.findByBookId(bookId);
 
@@ -76,6 +93,5 @@ public class bookService {
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }
     }
-
     
 }
