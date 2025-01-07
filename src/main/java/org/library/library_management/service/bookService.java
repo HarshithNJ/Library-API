@@ -154,8 +154,8 @@ public class bookService {
             if(book.getGenre() != null)
                 b.setGenre(book.getGenre());
 
-            if(book.getAvailable() != false)
-                b.setAvailable(book.getAvailable());
+            // if(book.getAvailable() != false)
+            //     b.setAvailable(book.getAvailable());
 
             repository.save(b);
 
