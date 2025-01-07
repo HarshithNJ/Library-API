@@ -133,5 +133,43 @@ public class bookService {
             return new ResponseEntity<Object>(map, HttpStatus.NOT_ACCEPTABLE);
         }
     }
+
+
+
+
+
+
+    public ResponseEntity<Object> updateBook(String bookId, book book) {
+        Optional<book> op = repository.findByBookId(bookId);
+
+        if(repository.findById(op.get().getIdNO()).isPresent()){
+            book b = repository.findByBookId(bookId).get();
+
+            if(book.getTitle() != null)
+                b.setTitle(book.getTitle());
+
+            if(book.getAuthor() != null)
+                b.setAuthor(book.getAuthor());
+
+            if(book.getGenre() != null)
+                b.setGenre(book.getGenre());
+
+            if(book.getAvailable() != false)
+                b.setAvailable(book.getAvailable());
+
+            repository.save(b);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("success", "Data Updated Success");
+            map.put("data", b);
+
+            return new ResponseEntity<Object> (map, HttpStatus.ACCEPTED);
+        }else{
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("error", "Data Not Found with the Id : " +op.get());
+
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
     
 }

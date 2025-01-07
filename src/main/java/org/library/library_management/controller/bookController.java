@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+
 
 
 @RestController
@@ -65,5 +67,13 @@ public class bookController {
     @DeleteMapping("/books/{bookId}")
     public ResponseEntity<Object> deleteBook(@PathVariable String bookId){
         return service.deleteBook(bookId);
+    }
+
+
+    /*To Update Records */
+    //To Update book by its id
+    @PatchMapping("/books/{bookId}")
+    public ResponseEntity<Object> updateBook(@PathVariable String bookId, @RequestBody book book) {
+        return service.updateBook(bookId, book);
     }
 }
