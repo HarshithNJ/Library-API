@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,10 @@ public class bookController {
     }
 
 
+
+
+
+
     /*To Fetch Data*/
     //To Fetch All Book Values
     @GetMapping("/books")
@@ -45,5 +50,20 @@ public class bookController {
     public ResponseEntity<Object> getBookById(@PathVariable String bookId){
         return service.getBookById(bookId);
     }
+
+    //To Fetch book by the availability
+    @GetMapping("/books/available/{isAvailable}")
+    public ResponseEntity<Object> getBooksByAvailability(@PathVariable boolean isAvailable){
+        return service.getBooksByAvailability(isAvailable);
+    }
     
+
+
+
+    /*To Delete Records*/
+    //To Delete book by its id
+    @DeleteMapping("/books/{bookId}")
+    public ResponseEntity<Object> deleteBook(@PathVariable String bookId){
+        return service.deleteBook(bookId);
+    }
 }

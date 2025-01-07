@@ -72,11 +72,10 @@ public class bookService {
             map.put("sucess", "Record saved Successfully");
             map.put("Data", books);
 
-            return new ResponseEntity<Object>(books, HttpStatus.OK);
+            return new ResponseEntity<Object>(books, HttpStatus.FOUND);
         }
     }
 
-    
     public ResponseEntity<Object> getBookById(String bookId) {
         Optional<book> op = repository.findByBookId(bookId);
 
@@ -85,12 +84,53 @@ public class bookService {
             map.put("sucess", "Book Found");
             map.put("Data", op.get());            
 
-            return new ResponseEntity<Object>(op.get(), HttpStatus.OK);
+            return new ResponseEntity<Object>(op.get(), HttpStatus.FOUND);
         }else{
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("error", "Book Not Found with id " + bookId);
 
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> getBooksByAvailability(boolean isAvailable) {
+        List<book> li = repository.findByIsAvailable(isAvailable);
+
+        if(li.isEmpty()){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("error", "No Books Found");
+            
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+        }else{
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("sucess", "Books Found");
+            map.put("Data", li);
+
+            return new ResponseEntity<Object>(li, HttpStatus.FOUND);
+        }
+    }
+
+
+
+
+
+
+    public ResponseEntity<Object> deleteBook(String bookId) {
+        Optional<book> op = repository.findByBookId(bookId);
+
+        if (op.isPresent()) {
+            repository.deleteById(op.get().getIdNO());
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("sucess", "Book deleted Successfully");
+            map.put("Data", op.get());
+
+            return new ResponseEntity<Object>(map, HttpStatus.OK);
+        }else{
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("error", "Book Doeesn't Exist with the Id : " + bookId);
+
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_ACCEPTABLE);
         }
     }
     
